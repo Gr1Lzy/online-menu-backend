@@ -11,7 +11,7 @@
     </parent>
 
     <groupId>com.github</groupId>
-    <artifactId>online-menu-backend</artifactId>
+    <artifactId>online-menu-backend-old</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>online-menu-backend</name>
     <description>online-menu-backend</description>
@@ -19,6 +19,8 @@
     <properties>
         <!-- Java -->
         <java.version>17</java.version>
+        <!-- Spring Doc -->
+        <spring-doc.version>2.8.5</spring-doc.version>
         <!-- CheckStyle -->
         <checkstyle.version>3.6.0</checkstyle.version>
         <checkstyle-puppyclrawl.version>10.21.4</checkstyle-puppyclrawl.version>
@@ -28,12 +30,42 @@
         <!-- Spring Boot -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter</artifactId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
+        </dependency>
+
+        <!-- Spring Doc-->
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+            <version>${spring-doc.version}</version>
+        </dependency>
+
+        <!-- Lombok -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- H2 Database -->
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+        </dependency>
+
+        <!-- Liquibase -->
+        <dependency>
+            <groupId>org.liquibase</groupId>
+            <artifactId>liquibase-core</artifactId>
         </dependency>
     </dependencies>
 
