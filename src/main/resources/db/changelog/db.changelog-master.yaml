@@ -1,0 +1,9 @@
+databaseChangeLog:
+  - include:
+      file: db/changelog/changeset/01_create_roles_table.sql
+  - include:
+      file: db/changelog/changeset/01_populate_roles_table.sql
+  - include:
+      file: db/changelog/changeset/02_create_users_table.sql
+  - include:
+      file: db/changelog/changeset/02_populate_users_table.sql
