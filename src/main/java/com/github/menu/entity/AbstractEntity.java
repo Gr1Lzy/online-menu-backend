@@ -7,24 +7,27 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.MappedSuperclass;
 import lombok.Getter;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import java.sql.Timestamp;
+import java.time.Instant;
 
 @Getter
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
 public class AbstractEntity {
+
+  @Column(name = "id")
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @CreationTimestamp
-  private Timestamp createdAt;
+  @Column(name = "created_at", updatable = false)
+  @CreatedDate
+  private Instant createdAt;
 
-  @Column(updatable = false)
-  @UpdateTimestamp
-  private Timestamp updatedAt;
+  @Column(name = "updated_at")
+  @LastModifiedDate
+  private Instant updatedAt;
 }
