@@ -1,4 +1,4 @@
-package com.github.menu.util;
+package com.github.menu.util.role;
 
 import com.github.menu.entity.Role;
 import jakarta.persistence.AttributeConverter;

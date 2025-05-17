@@ -2,9 +2,10 @@ package com.github.menu.service.impl;
 
 import com.github.menu.dto.user.UserResponseDto;
 import com.github.menu.entity.User;
+import com.github.menu.exception.custom.EntityNotFoundException;
 import com.github.menu.repository.UserRepository;
 import com.github.menu.service.UserService;
-import com.github.menu.util.UserUtil;
+import com.github.menu.util.user.UserUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +20,7 @@ public class UserServiceImpl implements UserService {
     Long userId = UserUtil.getCurrentUserId();
 
     User user = userRepository.findById(userId)
-        .orElseThrow(() -> new RuntimeException("User not found"));
+        .orElseThrow(() -> new EntityNotFoundException("User not found"));
 
     return user.toDto();
   }

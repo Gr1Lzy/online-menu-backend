@@ -1,4 +1,4 @@
-package com.github.menu.util;
+package com.github.menu.util.jwt;
 
 import io.micrometer.common.lang.NonNull;
 import jakarta.servlet.FilterChain;

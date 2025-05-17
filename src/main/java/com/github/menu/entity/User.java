@@ -42,15 +42,15 @@ public class User extends AbstractEntity implements UserDetails {
     role = Role.ROLE_USER;
   }
 
+  @Override
+  public Collection<? extends GrantedAuthority> getAuthorities() {
+    return List.of(new SimpleGrantedAuthority(role.name()));
+  }
+
   public UserResponseDto toDto() {
     return MAPPER.toDto(this);
   }
 
   private static final DtoMapper<User, UserResponseDto> MAPPER =
       new DtoMapper<>(User.class,  UserResponseDto.class);
-
-  @Override
-  public Collection<? extends GrantedAuthority> getAuthorities() {
-    return List.of(new SimpleGrantedAuthority(role.name()));
-  }
 }

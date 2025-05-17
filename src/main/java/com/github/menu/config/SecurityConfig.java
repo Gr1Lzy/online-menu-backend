@@ -1,7 +1,7 @@
 package com.github.menu.config;
 
 
-import com.github.menu.util.JwtAuthFilter;
+import com.github.menu.util.jwt.JwtAuthFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,14 +23,15 @@ public class SecurityConfig {
   private final JwtAuthFilter jwtAuthFilter;
 
   @Bean
-  public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-    http
+  public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
+    httpSecurity
         .csrf(AbstractHttpConfigurer::disable)
 
-        .authorizeHttpRequests(req -> req
+        .authorizeHttpRequests(request -> request
             .requestMatchers("/**")
                 .permitAll()
                 .requestMatchers("/api/admin/**").hasAuthority("ADMIN")
+                .requestMatchers("/api/user/**").hasAnyAuthority("USER", "ADMIN")
                 .anyRequest()
                 .authenticated()
         )
@@ -40,6 +41,6 @@ public class SecurityConfig {
 
         .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
-    return http.build();
+    return httpSecurity.build();
   }
 }

@@ -5,11 +5,13 @@ import com.github.menu.dto.auth.LoginResponseDto;
 import com.github.menu.dto.auth.RefreshRequestDto;
 import com.github.menu.dto.auth.RegisterRequestDto;
 import com.github.menu.entity.User;
+import com.github.menu.exception.custom.AuthenticationException;
+import com.github.menu.exception.custom.EntityExistsException;
+import com.github.menu.exception.custom.EntityNotFoundException;
+import com.github.menu.exception.custom.InvalidTokenException;
 import com.github.menu.repository.UserRepository;
 import com.github.menu.service.AuthService;
-import com.github.menu.util.JwtTokenUtil;
-import jakarta.persistence.EntityExistsException;
-import jakarta.persistence.EntityNotFoundException;
+import com.github.menu.util.jwt.JwtTokenUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -28,13 +30,10 @@ public class AuthServiceImpl implements AuthService {
 
   @Override
   public LoginResponseDto login(LoginRequestDto requestDto) {
-    Authentication authentication = authenticationManager.authenticate(
-        new UsernamePasswordAuthenticationToken(
-            requestDto.getUsername(),
-            requestDto.getPassword()
-        )
-    );
+    String username = requestDto.getUsername();
+    String password = requestDto.getPassword();
 
+    Authentication authentication = tryToAuthenticate(username, password);
     User user = (User) authentication.getPrincipal();
 
     return LoginResponseDto.builder()
@@ -63,7 +62,7 @@ public class AuthServiceImpl implements AuthService {
     String refreshToken = requestDto.getRefreshToken();
 
     if (!jwtTokenUtil.isRefreshTokenValid(refreshToken)) {
-      throw new SecurityException("Invalid or expired refresh token");
+      throw new InvalidTokenException("Invalid or expired refresh token");
     }
 
     User user = userRepository.findById(jwtTokenUtil.extractUserId(refreshToken))
@@ -73,5 +72,14 @@ public class AuthServiceImpl implements AuthService {
         .accessToken(jwtTokenUtil.generateAccessToken(user))
         .refreshToken(jwtTokenUtil.generateRefreshToken(user))
         .build();
+  }
+
+  private Authentication tryToAuthenticate(String username, String password) {
+    try {
+      return authenticationManager.authenticate(
+          new UsernamePasswordAuthenticationToken(username, password));
+    } catch (Exception ex) {
+      throw new AuthenticationException("Invalid username or password");
+    }
   }
 }
