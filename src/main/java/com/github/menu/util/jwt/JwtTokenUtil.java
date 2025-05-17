@@ -1,4 +1,4 @@
-package com.github.menu.util;
+package com.github.menu.util.jwt;
 
 import com.github.menu.entity.User;
 import io.jsonwebtoken.Claims;
@@ -73,6 +73,7 @@ public class JwtTokenUtil {
         claims.put(ROLE_NAME, user.getRole());
       }
     }
+
     claims.put(TOKEN_TYPE_NAME, tokenType);
 
     return Jwts.builder()

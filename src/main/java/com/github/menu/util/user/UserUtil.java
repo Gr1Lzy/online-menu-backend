@@ -1,4 +1,4 @@
-package com.github.menu.util;
+package com.github.menu.util.user;
 
 import lombok.experimental.UtilityClass;
 import org.springframework.security.core.context.SecurityContextHolder;
